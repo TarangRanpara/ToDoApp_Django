@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Django CRUD Operations</title>
+    
+</head>
+<body>
+
+    <br>
+
+    <fieldset>
+    
+    <legend> <h1>&nbsp; ToDo tasks &nbsp;</h1></legend>
+    <table border="1" cellpadding = "5">
+        {% for task in tasks %}
+            <tr>
+                <form action="/update/{{ task.pk }}/" method="POST"> 
+                    {% csrf_token %}
+                    <td>
+                        <input type="number" value="{{ task.pk }}" name="pk" id="pk">
+                    </td>
+                    <td>
+                        <input type="text" name="des" id="des" value="{{ task.description }}">
+                    </td>
+                    <td>
+                        <input type="text" value = "{{ task.author }}" name="author" id="author">
+                    </td>
+                    <td>
+                        {{ task.pub | timesince }} ago
+                    </td>
+                    <td>
+                        <input type = "submit" id = "edit" onmouseover="convertToEdit();" value="edit"> </input>
+                    </td>
+                
+                </form>
+                <td><form action="/delete/{{ task.pk }}/" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="entry_no" value="{{ task.pk }}">
+                    <input type="submit" value="delete">
+                </form></td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    <br>
+
+    </fieldset>
+
+    <br>
+    <br>
+
+
+    <fieldset>
+            <legend>
+                <h1>
+                        &nbsp;Enter Tasks for ToDo ..&nbsp;
+                </h1>
+            </legend>
+            <form action="/create/" method="POST">
+                {% csrf_token %}
+                <input type="text" name="entry" placeholder="enter to-do task">
+                <input type="text" name = "author" placeholder="author name..">
+                <input type="submit">
+            </form>
+        </fieldset>
+</body>
+</html>
